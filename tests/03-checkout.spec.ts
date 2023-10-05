@@ -4,6 +4,14 @@ test.beforeEach(async ({ page }) => {
   await page.goto('https://stickerfy.herokuapp.com/');
 });
 
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished '${testInfo.title}' - status '${testInfo.status}'`);
+});
+
+test.afterAll(async () => {
+  console.log('\nTests are done!');
+});
+
 
 test.describe('Checkout', () => {
   test('checkout 1 item', async ({ page }) => {

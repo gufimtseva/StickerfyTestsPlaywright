@@ -4,11 +4,14 @@ test.beforeEach(async ({ page }) => {
   await page.goto('https://stickerfy.herokuapp.com/');
 });
 
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished '${testInfo.title}' - status '${testInfo.status}'`);
+});
 
 test.describe('Add stickers to the cart', () => {
   test('add 1 sticker', async ({ page }) => {
     // Click the 'Add to cart' button for the 'Happy' sticker
-    await page.getByRole('button', { name: 'Add to cart' }).first().click();
+    await page.getByRole('button', { name: 'Add to cart' }).nth(0).click();
 
     // Make sure the cart only has 1 item and click
     await page.getByRole('link', { name: 'Shopping Cart 1' }).click();
@@ -22,8 +25,9 @@ test.describe('Add stickers to the cart', () => {
 
   test('add multiple same stickers', async ({ page }) => {
     // Click the 'Add to cart' button for the 'Angry' sticker twice
-    await page.getByRole('button', { name: 'Add to cart' }).nth(1).click();
-    await page.getByRole('button', { name: 'Add to cart' }).nth(1).click();
+    const Angry = page.getByRole('button', { name: 'Add to cart' }).nth(1);
+    await Angry.click();
+    await Angry.click();
 
     // Make sure the cart has 2 items and click
     await page.getByRole('link', { name: 'Shopping Cart 2' }).click();
@@ -37,7 +41,7 @@ test.describe('Add stickers to the cart', () => {
   
   test('add multiple different stickers', async ({ page }) => {
     // Click the 'Add to cart' button for the 'Happy', 'Angry' and 'Sad' sticker
-    await page.getByRole('button', { name: 'Add to cart' }).first().click();
+    await page.getByRole('button', { name: 'Add to cart' }).nth(0).click();
     await page.getByRole('button', { name: 'Add to cart' }).nth(1).click();
     await page.getByRole('button', { name: 'Add to cart' }).nth(2).click();
 
@@ -45,7 +49,7 @@ test.describe('Add stickers to the cart', () => {
     await page.getByRole('link', { name: 'Shopping Cart 3' }).click();
 
     // Expect page to have items with each of the stickers and count '1'
-    await expect(page.getByText('1', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('1', { exact: true }).nth(0)).toBeVisible();
     await expect(page.getByText('1', { exact: true }).nth(1)).toBeVisible();
     await expect(page.getByText('1', { exact: true }).nth(2)).toBeVisible();
 
@@ -57,7 +61,7 @@ test.describe('Add stickers to the cart', () => {
 test.describe('Remove stickers from the cart', () => {
   test('remove 1 sticker', async ({ page }) => {
     // Click the 'Add to cart' button for the 'Happy' sticker
-    await page.getByRole('button', { name: 'Add to cart' }).first().click();
+    await page.getByRole('button', { name: 'Add to cart' }).nth(0).click();
 
     // Make sure the cart only has 1 item and click
     await page.getByRole('link', { name: 'Shopping Cart 1' }).click();

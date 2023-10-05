@@ -4,6 +4,10 @@ test.beforeEach(async ({ page }) => {
   await page.goto('https://stickerfy.herokuapp.com/');
 });
 
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished '${testInfo.title}' - status '${testInfo.status}'`);
+});
+
 
 test.describe('Homepage', () => {
   test('has title', async ({ page }) => {
